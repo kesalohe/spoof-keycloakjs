@@ -6,22 +6,19 @@ describe('Spoofing Keycloakjs', () => {
 
 
   it('implicit code flow', () => {
-    const auth0State = {
+    const keycloakState = {
       state: 'a81a596b-7399-4990-84a0-bcd4bddc75b2',
-      // TODO: is this property required?
-      redirectUri: 'http%3A%2F%2Flocalhost%3A4200%2F',
-      // TODO: explains this value, I guess this is since epoch?
-      expires: 1969280317000
+      expires: new Date().getTime() + (60 * 60 * 1000)
     };
-    const callbackUrl = `http://localhost:8000/#access_token=${access_token}&session_state=9faaf148-454c-4866-a6b3-054e760edf7c&id_token=${access_token}&token_type=Bearer&state=${auth0State.state}`;
+    const callbackUrl = `http://localhost:8000/#access_token=${access_token}&id_token=${access_token}&token_type=Bearer&state=${keycloakState.state}`;
     cy.visit(callbackUrl, {
       onBeforeLoad(win) {
-        // TODO would be a good idea to point to keycloak.js source code to explain why we need this.
-        win.localStorage.setItem(`kc-callback-${auth0State.state}`, JSON.stringify(auth0State));
+        win.localStorage.setItem(`kc-callback-${keycloakState.state}`, JSON.stringify(keycloakState));
       }
     });
 
-    // TODO add 2 assert to validate that we can see the John Doe.
+    cy.get('#givenName').contains('John');
+    cy.get('#surname').contains('Doe');
   });
 
   it('authorization code flow', () => {

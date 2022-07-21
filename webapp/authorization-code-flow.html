@@ -3,29 +3,29 @@
     <script src="keycloak.js"></script>
     <script>
       function initKeycloak() {
-              const keycloak = new Keycloak({
-                      url: 'http://keycloak-server$',
-                      realm: 'myrealm',
-                      clientId: 'myapp'
-                    });
-              keycloak.init({
-                      onLoad: 'login-required',
-                      checkLoginIframe: false,
-                      flow: 'code'
-                    }).then(function(authenticated) {
-                            document.getElementById("givenName").textContent = keycloak.tokenParsed.GivenName;
-                            document.getElementById("surname").textContent = keycloak.tokenParsed.Surname;
-                            alert(authenticated ? 'authenticated' : 'not authenticated');
-                    }).catch(function() {
-                            alert('failed to initialize');
-                          });
-            }
+        const keycloak = new Keycloak({
+            url: 'http://keycloak-server$',
+            realm: 'myrealm',
+            clientId: 'myapp'
+        });
+        keycloak.init({
+            onLoad: 'login-required',
+            checkLoginIframe: false,
+            flow: 'code'
+        }).then(function(authenticated) {
+            document.getElementById("givenName").textContent = keycloak.tokenParsed.GivenName;
+            document.getElementById("surname").textContent = keycloak.tokenParsed.Surname;
+            alert(authenticated ? 'authenticated' : 'not authenticated');
+        }).catch(function() {
+            alert('failed to initialize');
+        });
+      }
     </script>
   </head>
   <body onload="initKeycloak()">
     <ul>
-      <li>Given name: <span id="givenName"></span></li>
-      <li>Surname: <span id="surname"></span></li>
+      <li>Given name: <span id="givenName">Default GivenName</span></li>
+      <li>Surname: <span id="surname">Default Surname</span></li>
     </ul>
   </body>
 </html>
