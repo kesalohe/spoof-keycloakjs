@@ -4,14 +4,14 @@
     <script>
       function initKeycloak() {
         const keycloak = new Keycloak({
-            url: 'http://keycloak-server$',
+            url: 'http://localhost:8000',
             realm: 'myrealm',
             clientId: 'myapp'
         });
         keycloak.init({
             onLoad: 'login-required',
             checkLoginIframe: false,
-            flow: 'code'
+            flow: 'standard'
         }).then(function(authenticated) {
             document.getElementById("givenName").textContent = keycloak.tokenParsed.GivenName;
             document.getElementById("surname").textContent = keycloak.tokenParsed.Surname;
